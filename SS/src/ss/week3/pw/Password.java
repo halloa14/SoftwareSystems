@@ -1,21 +1,23 @@
 package ss.week3.pw;
 
-public class Password implements Checker {
+public class Password {
 	
-	public static final String INITIAL = "Banaan123!";
+	Checker checker;
+	String factoryPassword;
 	private String pass;
 	
-	public Password() {
-		pass = INITIAL;
+	public Password(Checker checker) {
+		this.checker = checker;
+		factoryPassword = checker.generatePassword();
+		pass = checker.generatePassword();
 	}
 	
-	public boolean acceptable(String suggestion) {
-		return !(suggestion.contains(" ") || suggestion.length() < 7);
-		
+	public Password() {
+		this(new BasicChecker());
 	}
 	
 	public boolean setWord(String oldp, String newp) {
-		if (oldp == pass && acceptable(newp)) {
+		if (oldp.equals(pass) && checker.acceptable(newp)) {
 			pass = newp;
 			return true;
 		}
@@ -26,4 +28,12 @@ public class Password implements Checker {
 		return test.equals(pass);
 	}
 
+	public Checker getChecker() {
+		return checker;
+	}
+
+	public String getFactoryPassword() {
+		return factoryPassword;
+	}
+	
 }
