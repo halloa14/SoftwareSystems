@@ -1,5 +1,6 @@
 package ss.week3.hotel;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class Hotel {
@@ -86,6 +87,18 @@ public class Hotel {
 			}
 		}
 		return result;
+	}
+	
+	public Bill getBill(String guestname, int nspent, PrintStream ps) {
+		if (getRoom(guestname) != null && getRoom(guestname) instanceof PricedRoom) {
+			Bill bill = new Bill(ps);
+			for (int i = 0; i < nspent; i++) {
+				bill.newItem((PricedRoom) getRoom(guestname));
+			}
+			bill.newItem((PricedSafe) getRoom(guestname).getSafe());
+			return bill;
+		}
+		return null;
 	}
 
 }

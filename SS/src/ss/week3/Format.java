@@ -9,7 +9,7 @@ public class Format {
 	
 	public static String printLine(String text, double amount) {
 		String text2 = text + ":";
-		String fml = String.format("%1$-15s %2$10.2f", text2, amount);
+		String fml = String.format("%1$-20s %2$10.2f", text2, amount);
 		return fml;
 	}
 	
