@@ -168,7 +168,9 @@ public class Board {
     //@ ensures \result == this.isFull() || this.hasWinner();
     /*@pure*/
     public boolean gameOver() {
-    	// TODO: implement, see exercise P-4.19
+    	if (isFull() || hasWinner()) {
+    		return true;
+    	}
         return false;
     }
 
@@ -182,7 +184,11 @@ public class Board {
      */
     /*@ pure */
     public boolean hasRow(Mark m) {
-    	// TODO: implement, see exercise P-4.19
+    	if (fields[0] == m && fields[1] == m && fields[2] == m || fields[3] == m 
+    					&& fields[4] == m && fields[5] == m || fields[6] == m 
+    					&& fields[7] == m && fields[8] == m) {
+    		return true;
+    	}
         return false;
     }
 
@@ -196,7 +202,11 @@ public class Board {
      */
     /*@ pure */
     public boolean hasColumn(Mark m) {
-    	// TODO: implement, see exercise P-4.19
+    	if (fields[0] == m && fields[3] == m && fields[6] == m || fields[1] == m 
+    					&& fields[4] == m && fields[7] == m || fields[2] == m 
+    					&& fields[5] == m && fields[8] == m) {
+    		return true;
+    	}
         return false;
     }
 
@@ -210,7 +220,10 @@ public class Board {
      */
     /*@ pure */
     public boolean hasDiagonal(Mark m) {
-    	// TODO: implement, see exercise P-4.19
+    	if (fields[0] == m && fields[4] == m && fields[8] == m || fields[6] == m 
+    						&& fields[4] == m && fields[2] == m) {
+    		return true;
+    	}
         return false;
     }
 
@@ -226,7 +239,9 @@ public class Board {
     //@ ensures \result == this.hasRow(m) || this.hasColumn(m) | this.hasDiagonal(m);
     /*@ pure */
     public boolean isWinner(Mark m) {
-    	// TODO: implement, see exercise P-4.19
+    	if (hasRow(m) || hasColumn(m) || hasDiagonal(m)) {
+    		return true;
+    	}
         return false;
     }
 
@@ -239,7 +254,9 @@ public class Board {
     //@ ensures \result == isWinner(Mark.XX) | \result == isWinner(Mark.OO);
     /*@pure*/
     public boolean hasWinner() {
-    	// TODO: implement, see exercise P-4.19
+    	if (isWinner(Mark.XX) || isWinner(Mark.OO)) {
+    		return true;
+    	}
         return false;
     }
 
@@ -274,7 +291,9 @@ public class Board {
     /*@ ensures (\forall int i; 0 <= i & i < DIM * DIM;
                                 this.getField(i) == Mark.EMPTY); @*/
     public void reset() {
-    	// TODO: implement, see exercise P-4.19
+    	for (int i = 0; 0 <= i && i < DIM * DIM; i++) {
+    		fields[i] = Mark.EMPTY;
+    	}
     }
 
     /**
@@ -288,7 +307,7 @@ public class Board {
     //@ requires this.isField(i);
     //@ ensures this.getField(i) == m;
     public void setField(int i, Mark m) {
-    	// TODO: implement, see exercise P-4.19
+    	fields[i] = m;
     }
 
     /**
@@ -305,6 +324,6 @@ public class Board {
     //@ requires this.isField(row,col);
     //@ ensures this.getField(row,col) == m;
     public void setField(int row, int col, Mark m) {
-    	// TODO: implement, see exercise P-4.19
+    	setField(index(row, col), m);
     }
 }
