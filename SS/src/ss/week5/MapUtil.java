@@ -36,7 +36,7 @@ public class MapUtil {
         return true;
     }
     
-    
+    /*@  @*/
     public static <K, V> Map<V, Set<K>> inverse(Map<K, V> map) {
     	Map<V, Set<K>> result = new HashMap<V, Set<K>>();
         for (K key : map.keySet()) {
@@ -46,20 +46,37 @@ public class MapUtil {
             	keyset.add(key);
             	result.put(value, keyset);
         	}
-        	result.
+        	result.get(value).add(key);
         }
-        return null;
+        return result;
 	}
+    
+    /*@  @*/
 	public static <K, V> Map<V, K> inverseBijection(Map<K, V> map) {
-        // TODO: implement, see exercise P-5.3
-        return null;
+    	Map<V, K> result = new HashMap<V, K>();
+        if (isOneOnOne(map)) {
+        	for (Map.Entry<K, V> entry : map.entrySet()) {
+        		result.put(entry.getValue(), entry.getKey());
+        	}
+        }
+        return result;
 	}
 	public static <K, V, W> boolean compatible(Map<K, V> f, Map<V, W> g) {
-        // TODO: implement, see exercise P-5.4
-        return false;
+        for (V value : f.values()) {
+        	if (!g.containsKey(value)) {
+        		return false;
+        	}
+        }
+        return true;
 	}
 	public static <K, V, W> Map<K, W> compose(Map<K, V> f, Map<V, W> g) {
-        // TODO: implement, see exercise P-5.5
-        return null;
+		Map<K, W> result = new HashMap<K, W>();
+        if (compatible(f, g)) {
+        	for (K key : f.keySet()) {
+        		W value = g.get(f.get(key));
+        		result.put(key, value);
+        	}
+        }
+        return result;
 	}
 }
