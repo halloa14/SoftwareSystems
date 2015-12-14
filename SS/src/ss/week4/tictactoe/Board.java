@@ -20,7 +20,7 @@ public class Board {
     //@ private invariant fields.length == DIM*DIM;
     /*@ invariant (\forall int i; 0 <= i & i < DIM*DIM;
         getField(i) == Mark.EMPTY || getField(i) == Mark.XX || getField(i) == Mark.OO); */
-    private Mark[] fields;
+    private Mark[] fields = new Mark[DIM * DIM];
 
     // -- Constructors -----------------------------------------------
 
@@ -184,12 +184,21 @@ public class Board {
      */
     /*@ pure */
     public boolean hasRow(Mark m) {
-    	if (fields[0] == m && fields[1] == m && fields[2] == m || fields[3] == m 
-    					&& fields[4] == m && fields[5] == m || fields[6] == m 
-    					&& fields[7] == m && fields[8] == m) {
-    		return true;
+    	for (int row = 0; row < DIM; row++) {
+    		if (hasRow(row, m)) {
+    			return true;
+    		}
     	}
-        return false;
+    	return false;
+    }
+    
+    public boolean hasRow(int row, Mark m) {
+    	for (int col = 0; col < DIM; col++) {
+    		if (!(getField(row, col) == m)) {
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
     /**

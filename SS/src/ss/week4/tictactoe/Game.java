@@ -119,11 +119,12 @@ public class Game {
      */
     private void play() {
         update();
-    	Scanner scanner = new Scanner(System.in);
         while (!board.gameOver()) {
-        	System.out.println("" + this.players[0] + "is aan de beurt.");
-        	
+        	players[current].makeMove(board);
+        	current = (current + 1) % NUMBER_PLAYERS;
+        	update();
         }
+        printResult();
     }
 
     /**
