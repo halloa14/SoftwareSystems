@@ -36,7 +36,7 @@ public class MapUtil {
         return true;
     }
     
-    /*@  @*/
+    /*@  ensures map.values() == \result.keySet(); @*/
     public static <K, V> Map<V, Set<K>> inverse(Map<K, V> map) {
     	Map<V, Set<K>> result = new HashMap<V, Set<K>>();
         for (K key : map.keySet()) {
@@ -45,13 +45,15 @@ public class MapUtil {
         		HashSet<K> keyset = new HashSet<K>();
             	keyset.add(key);
             	result.put(value, keyset);
+        	} else { 
+        		result.get(value).add(key); 
         	}
-        	result.get(value).add(key);
         }
         return result;
 	}
     
-    /*@  @*/
+    /*@ ensures isOneOnOne(map) <==> map.values() == \result.keySet() &
+        map.keySet() == \result.values(); @*/
 	public static <K, V> Map<V, K> inverseBijection(Map<K, V> map) {
     	Map<V, K> result = new HashMap<V, K>();
         if (isOneOnOne(map)) {
@@ -61,6 +63,9 @@ public class MapUtil {
         }
         return result;
 	}
+	
+	/*@ ensures (\forall int i; 0 < i & i < f.size();
+	   !(g.containsKey(f.values().toArray()[i]) <==> \result == true)); @*/
 	public static <K, V, W> boolean compatible(Map<K, V> f, Map<V, W> g) {
         for (V value : f.values()) {
         	if (!g.containsKey(value)) {
@@ -69,6 +74,8 @@ public class MapUtil {
         }
         return true;
 	}
+	
+	/*@ ensures compatible(f, g) <==> \result.keySet() == f.keySet(); @*/
 	public static <K, V, W> Map<K, W> compose(Map<K, V> f, Map<V, W> g) {
 		Map<K, W> result = new HashMap<K, W>();
         if (compatible(f, g)) {
