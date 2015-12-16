@@ -20,7 +20,6 @@ public class TicTacToe {
     	for (int i = 0; i < args.length; i++) {
     		players[i] = stringToPlayer(args[i], marks[i]);
     	}
-    	scanner.close();
     	Game game = new Game(players[0], players[1]);
     	game.start();
     }
@@ -28,9 +27,9 @@ public class TicTacToe {
     private static Player stringToPlayer(String s, Mark m) {
     	Player player;
     	if (s.equals("-S")) {
-			player = new ComputerPlayer(m);
+			player = new ComputerPlayer(m, new SmartStrategy());
 		} else if (s.equals("-N")) {
-			player = new ComputerPlayer(m);
+			player = new ComputerPlayer(m, new NaiveStrategy());
 		} else {
 			player = new HumanPlayer(s, m);
 		}
