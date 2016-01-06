@@ -75,7 +75,9 @@ public class MapUtil {
         return true;
 	}
 	
-	/*@ ensures compatible(f, g) <==> \result.keySet() == f.keySet(); @*/
+	/*@ requires compatible(f, g);
+	 * ensures \result.keySet() == f.keySet(); 
+	 *  ensures (\forall K key; f.containsKey(key); \result.get(key) == g.get(f.get(key))); @*/
 	public static <K, V, W> Map<K, W> compose(Map<K, V> f, Map<V, W> g) {
 		Map<K, W> result = new HashMap<K, W>();
         if (compatible(f, g)) {
