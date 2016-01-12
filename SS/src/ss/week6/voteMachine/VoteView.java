@@ -9,5 +9,6 @@ public interface VoteView extends Observer {
     public void showVotes(Map<String, Integer> votes);
     public void showParties(List<String> parties);
     public void showError(String message);
+    
 
 }

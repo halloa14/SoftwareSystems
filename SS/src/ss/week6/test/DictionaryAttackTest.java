@@ -20,8 +20,9 @@ public class DictionaryAttackTest {
     /** Testvariabele for a <tt>DictionaryAttack</tt> object. */
     private DictionaryAttack dictionaryAttack;
 
-    /** Path to the text file */
-    private static final String PATH = ""; //Your path to the test folder
+    /** Path to the text file. */
+    private static final String PATH = "C:\\Users\\Sander\\git\\SoftwareSystems\\"
+    				+ "SS\\src\\ss\\week6\\test\\"; //Your path to the test folder
 
     @Before
     public void setUp() {

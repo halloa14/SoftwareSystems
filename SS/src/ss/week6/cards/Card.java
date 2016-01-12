@@ -1,10 +1,25 @@
 package ss.week6.cards;
 
-public class Card
-{
+import java.io.BufferedReader;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.PrintWriter;
+import java.io.Serializable;
+
+public class Card implements Serializable {
 
 	// ---- constants -----------------------------------
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// ranks are 2, ..., 9 and:
 	public static final char JACK = 'J';
 	public static final char QUEEN = 'Q';
@@ -320,4 +335,95 @@ public class Card
 	public boolean isInRankBefore(Card card) {
 		return isRankFollowing(this.getRank(), card.getRank());
 	}
+	
+	public void write(PrintWriter pw) {
+		pw.println(toString());
+	}
+	
+	public static Card read(BufferedReader in) throws EOFException {
+		try {
+			String linex = in.readLine();
+			if (linex == null | in == null) {
+				throw new EOFException();
+			}
+			String[] strings = linex.split(" ");
+			return new Card(Card.suitString2Char(strings[0]),
+						Card.rankString2Char(strings[1]));
+		} catch (EOFException e) {
+			throw e;
+		} catch (IOException e) {
+			e.printStackTrace();
+
+		}
+		return null;
+		
+	}
+	
+	public void write(DataOutput out) {
+		try {
+			out.writeByte((byte) getSuit());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			out.writeByte((byte) getRank());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Card read(DataInput in) {
+		try {
+			return new Card((char) in.readByte(), (char) in.readByte());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void write(ObjectOutput out) {
+		try {
+			out.writeObject(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Card read(ObjectInput in) {
+		try {
+			return (Card) in.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		PrintWriter pw = null;
+	
+		if (!(args.length == 0)) {
+			File file = new File("C:/Development/bestanden/" + args[0]);
+			try {
+				pw = new PrintWriter(file);
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else { 
+			pw = new PrintWriter(System.out); 
+		}
+		Card card1 = new Card('C', 'A');
+		Card card2 = new Card('D', 'T');
+		Card card3 = new Card('H', 'H');
+
+		card1.write(pw);
+		card2.write(pw);
+		card3.write(pw);
+		pw.close();
+	}
 }
+
