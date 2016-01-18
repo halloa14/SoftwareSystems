@@ -18,16 +18,19 @@ public class TestSyncConsole extends Thread {
 	public static void sum(String name) {
 		lock.lock();
 		int a; int b;
-		a = Console.readInt("Thread " + name + ": " + "Enter first number..  ");
-		b = Console.readInt("Thread " + name + ": " + "Enter Second number.. ");
+		a = SyncConsole.readInt("Thread " + name + ": " + "Enter first number..  ");
+		b = SyncConsole.readInt("Thread " + name + ": " + "Enter Second number.. ");
 		System.out.println("" + a + " + " + b + " = " + (a + b));
 		lock.unlock();
 		 
 	}
 	
 	public static void main(String[] args) {
-		new TestSyncConsole("A").start();
-		new TestSyncConsole("B").start();
+		TestSyncConsole A = new TestSyncConsole("A");
+		TestSyncConsole B = new TestSyncConsole("B");
+		
+		B.start();
+		A.start();
 	}
 }
 

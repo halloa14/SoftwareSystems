@@ -2,11 +2,11 @@ package ss.week7.threads;
 
 public class SynchronizedIntCell implements IntCell {
 	private int value = 0;
-	private int set = 0;
+	private boolean set = false;
 
 	@Override
 	public synchronized void setValue(int val) {
-		if (set == 1) {
+		while (set) {
 			try {
 				wait();
 
@@ -15,7 +15,7 @@ public class SynchronizedIntCell implements IntCell {
 			}
 			
 		}
-		set = 1;
+		set = true;
 		this.value = val;
 		notify();
 
@@ -25,16 +25,17 @@ public class SynchronizedIntCell implements IntCell {
 
 	@Override
 	public synchronized int getValue() {
-		if (set == 0) {
+		while (!set) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		set = 0;
+		set = false;
+		int val2 = value;
 		notify();
-		return value;
+		return val2;
 		
 		
 

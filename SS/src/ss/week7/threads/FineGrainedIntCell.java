@@ -15,45 +15,35 @@ public class FineGrainedIntCell implements IntCell {
 	@Override
 	public void setValue(int val) {
 		lock.lock();
-		while (set) {
+		if (set) {
 			try {
-				full.await();
-				
-				
+				empty.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			} finally {
-				lock.unlock();
-				
-			}
+			} 
 		}
 		set = true;
 		value = val;
 		full.signal();
-		
-		
+		lock.unlock();
 	}
 
 	@Override
 	public int getValue() {
 		lock.lock();
-		while (!set) {
+		if (!set) {
 			try {
-				empty.await();
-				
-				
+				full.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			} finally {
-				
-				lock.unlock();
-				
 			}
 		}
 		
 		set = false;
+		int val2 = value;
 		empty.signal();
-		return value;
+		lock.unlock();
+		return val2;
 	}
 		
 }

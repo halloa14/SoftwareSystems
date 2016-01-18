@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
- * Peer for a simple client-server application
+ * Peer for a simple client-server application.
  * @author  Theo Ruys
  * @version 2005.02.21
  */
@@ -29,8 +29,9 @@ public class Peer implements Runnable {
      * @param   nameArg name of the Peer-proces
      * @param   sockArg Socket of the Peer-proces
      */
-    public Peer(String nameArg, Socket sockArg) throws IOException
-    {
+    public Peer(String nameArg, Socket sockArg) throws IOException {
+    	name = nameArg;
+    	sock = sockArg;
     }
 
     /**
@@ -38,6 +39,13 @@ public class Peer implements Runnable {
      * writes the characters to the default output.
      */
     public void run() {
+    	
+    	try {
+    		String text = in.readLine();
+			System.out.println(text);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
 
@@ -47,20 +55,40 @@ public class Peer implements Runnable {
      * On Peer.EXIT the method ends
      */
     public void handleTerminalInput() {
+    	Scanner scanner = new Scanner(System.in);
+    	String bericht = scanner.nextLine();
+    	while (!bericht.equals("exit")) {
+    		try {
+    			out.write(bericht);
+    			out.flush();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	scanner.close();
+    	System.out.println("Einde verhaal.");
     }
 
     /**
-     * Closes the connection, the sockets will be terminated
+     * Closes the connection, the sockets will be terminated.
      */
     public void shutDown() {
+    	try {
+			in.close();
+			out.close();
+	    	sock.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
     }
 
-    /**  returns name of the peer object*/
+    /**  returns name of the peer object. */
     public String getName() {
         return name;
     }
 
-    /** read a line from the default input */
+    /** read a line from the default input. */
     static public String readString(String tekst) {
         System.out.print(tekst);
         String antw = null;
