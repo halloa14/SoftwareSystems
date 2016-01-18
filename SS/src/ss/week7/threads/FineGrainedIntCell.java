@@ -17,17 +17,20 @@ public class FineGrainedIntCell implements IntCell {
 		lock.lock();
 		while (set) {
 			try {
-				empty.await();
-				value = val;
-				set = true;
-				full.signal();
+				full.await();
+				
 				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} finally {
 				lock.unlock();
+				
 			}
 		}
+		set = true;
+		value = val;
+		full.signal();
+		
 		
 	}
 
@@ -36,20 +39,22 @@ public class FineGrainedIntCell implements IntCell {
 		lock.lock();
 		while (!set) {
 			try {
-				full.await();
+				empty.await();
 				
 				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} finally {
+				
 				lock.unlock();
+				
 			}
 		}
-			
-			empty.signal();
-			return value;
-		}
 		
+		set = false;
+		empty.signal();
+		return value;
 	}
-
+		
+}
 

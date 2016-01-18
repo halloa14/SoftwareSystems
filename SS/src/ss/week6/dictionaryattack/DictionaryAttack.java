@@ -2,7 +2,6 @@ package ss.week6.dictionaryattack;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -10,7 +9,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.codec.binary.Hex;
 
 
 public class DictionaryAttack {
